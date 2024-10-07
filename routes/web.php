@@ -23,6 +23,9 @@ Route::prefix('admin')->group(function(){
     Route::get('/task/mark/{id}',[TaskController::class,'taskMark'])->name('task.mark');
     Route::get('/task/edit/{id}',[TaskController::class,'taskEdit'])->name('task.edit');
     Route::post('/task/update',[TaskController::class,'taskUpdate'])->name('task.update');
+    Route::get('/task/deleteall',[TaskController::class,'taskDeleteAll'])->name('task.deleteAll');
+    Route::get('/task/delete/{id}',[TaskController::class,'taskDelete'])->name('task.delete');
+    Route::post('/task/filter',[TaskController::class,'taskFilter'])->name('task.filter');
 });
 
 
@@ -31,7 +34,7 @@ Route::prefix('admin')->group(function(){
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('admin.index');
 });
 
 Route::get('/dashboard', function () {

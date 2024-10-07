@@ -19,6 +19,14 @@ class TaskController extends Controller
    }
 
    public function taskPost(Request $request){
+
+     $request->validate([
+        'title' => 'required',
+        'date' => 'required',
+        'user_id' => 'required',
+        'description' => 'required',
+
+    ]);
     $user = User::find($request->user);
 
     $task = new Task();
@@ -29,8 +37,14 @@ class TaskController extends Controller
     $task->status = 0;
 
     $task->save();
-    return redirect()->route('task.all')
-        ->with('message', 'Record added successfully!');
+
+    $notification = array(
+        'message' => 'Task Added Successfully',
+        'alert-type' => 'success'
+    );
+    return redirect()->route('task.all')->with($notification);
+    // return redirect()->route('task.all')
+    //     ->with('message', 'Record added successfully!');
 
    }
 
@@ -38,8 +52,11 @@ class TaskController extends Controller
       $task = Task::findOrFail($id);
       $task->status = 1;
       $task->save();
-      return redirect()->route('task.all')
-      ->with('message', 'Record added successfully!');
+      $notification = array(
+        'message' => 'Task Complete',
+        'alert-type' => 'success'
+    );
+    return redirect()->route('task.all')->with($notification);
    }
 
    public function taskEdit($id){
@@ -56,7 +73,41 @@ class TaskController extends Controller
     $task->description = $request->description;
     $task->status = $request->status;
     $task->save();
-    return redirect()->route('task.all')
-        ->with('message', 'Record added successfully!');
+    $notification = array(
+        'message' => 'Task Updated Completely',
+        'alert-type' => 'success'
+    );
+    return redirect()->route('task.all')->with($notification);
+   }
+
+   public function taskDeleteAll(){
+    Task::whereNotNull('id')->delete();
+    $notification = array(
+        'message' => 'All Task Deleted',
+        'alert-type' => 'error'
+    );
+    return redirect()->route('task.all')->with($notification);
+
+   }
+
+   public function taskDelete($id){
+    Task::findOrFail($id)->delete();
+    $notification = array(
+        'message' => 'Task Deleted',
+        'alert-type' => 'error'
+    );
+    return redirect()->route('task.all')->with($notification);
+   }
+
+   public function taskFilter(Request $request){
+    if($request->filter == 'all'){
+        $tasks = Task::all();
+    }
+    else{
+        $tasks = Task::where('status',$request->filter)->get();
+    }
+
+
+    return view('admin.task.index',compact('tasks'));
    }
 }

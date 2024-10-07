@@ -2,8 +2,7 @@
 
 @section('admin')
 
-<div class="content-wrapper">
-    <div class="container-full">
+
 
       <!-- Main content -->
       <section class="content">
@@ -505,7 +504,6 @@
           </div>
       </section>
       <!-- /.content -->
-    </div>
-</div>
+  
 
 @endsection

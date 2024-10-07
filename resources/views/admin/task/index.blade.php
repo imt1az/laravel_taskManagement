@@ -10,7 +10,44 @@
                 <div class="box">
                     <div class="box-header with-border">
                         <h3 class="box-title">All Task List</h3>
+                        <div class="mt-10">
+
+                            <form action="{{route('task.filter')}}" method="post">
+                                @csrf
+                                <div class="col-md-4">
+
+                                    <div class="form-group">
+
+                                        <div class="controls">
+                                            <select name="filter"  required="" class="form-control">
+                                                <option value="all">All</option>
+                                                <option value="1">Complete</option>
+                                                <option value="0">InComplete</option>
+
+
+
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div> <!-- End Col md 4 -->
+                                <div class="">
+                                    <input type="submit" class="btn btn-rounded btn-info mb-5"
+                                                    value="Submit" style="margin-left: 15px">
+                                </div>
+                            </form>
+                        </div>
+
+
+
+                        <div class="" style="float: right;">
+                            <a href="{{ route('task.deleteAll') }}" class="btn btn-rounded btn-warning mb-5">Delete All</a>
+                        </div>
+
                     </div>
+
+
                     <!-- /.box-header -->
                     <div class="box-body">
                         <div class="table-responsive">
@@ -62,11 +99,12 @@
                                                         if ($todaydate < $futureDate) {
                                                             $myDate = 'Have Time';
                                                         } else {
-                                                            $myDate = 'Over';
+                                                            $myDate = 'Date Over';
                                                         }
 
                                                     @endphp
-                                                    <tr class="{{ $todaydate < $futureDate ? 'btn-success' : 'bg-warning' }}">
+                                                    <tr
+                                                        class="{{ $todaydate < $futureDate ? 'bg-success' : 'bg-warning' }}">
                                                         <td class="">{{ $item->title }}</td>
                                                         <td class="">
 
@@ -74,7 +112,7 @@
                                                             {{ $item->date }} || {{ $myDate }}
 
                                                         </td>
-                                                        <td>{{ $item->description }}</td>
+                                                        <td>{{ Str::limit($item->description, 50) }}</td>
                                                         <td>
                                                             @if ($item->status == 0)
                                                                 <div class="px-25 py-10 w-100"><span
@@ -103,7 +141,7 @@
 
 
 
-                                                            <a target="_blank" title="Delete" href=""
+                                                            <a title="Delete" href="{{ route('task.delete', $item->id) }}"
                                                                 class="btn btn-danger"><i class="fa fa-trash"></i></a>
                                                         </td>
                                                     </tr>
